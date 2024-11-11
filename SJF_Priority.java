@@ -27,28 +27,6 @@ public class FCFS
             this.priority = priority;
         }
     }
-
-    private static void calculateFCFS(Process[] processes) 
-    {
-        int currentTime = 0;
-
-        for (Process p : processes) 
-        {
-            // Ensure the current time is at least the arrival time of the process
-            if (currentTime < p.arrivalTime) 
-                currentTime = p.arrivalTime;
-            
-
-            p.completionTime = currentTime + p.burstTime;
-
-            p.turnaroundTime = p.completionTime - p.arrivalTime;
-
-            p.waitingTime = p.turnaroundTime - p.burstTime;
-
-            currentTime = p.completionTime;
-        }
-    }
-
     private static void calculatePriority(Process[] processes) 
     {
         int n = processes.length;
@@ -146,60 +124,7 @@ public class FCFS
             completed++;
         }
     }
-    private static void calculateRR(Process[] processes) 
-    {
-        int n = processes.length;
-        Scanner sc = new Scanner(System.in);
-        System.out.print("\nEnter Time Quantum: ");
-        int tq = sc.nextInt();
-        
-        int[] rbt = new int[n];
-        for (int i = 0; i < n; i++) 
-        {
-            rbt[i] = processes[i].burstTime;  // Copy burst time
-        }
-        
-        int currentTime = 0;
-        int completed = 0; 
-        boolean[] comp = new boolean[n];
-
-        while (completed < n) 
-        {
-            boolean didProcessRun = false; 
-
-            for (int i = 0; i < n; i++) 
-            {
-                if (!comp[i]) 
-                {
-                    didProcessRun = true;                    
-                    if (rbt[i] > tq) 
-                    {
-                        currentTime += tq;
-                        rbt[i] -= tq; 
-                    }
-                    else 
-                    {
-                        currentTime += rbt[i];
-                        rbt[i] = 0;  
-
-                        comp[i] = true;
-                        completed++;
-                        
-                        processes[i].completionTime = currentTime;
-                        processes[i].turnaroundTime = currentTime - processes[i].arrivalTime;
-                        processes[i].waitingTime = processes[i].turnaroundTime - processes[i].burstTime;
-                    }
-                }
-            }
-            
-            if (!didProcessRun) 
-            {
-                currentTime++;
-            }
-        }
-    }
-
-
+   
 
     private static void display(Process[] processes)
     {
